@@ -28,12 +28,6 @@ func (c *ContainerService) GetInterfaceName() string {
 }
 
 func NewContainerService(service *dbusutil.Service, cli *client.Client) *ContainerService {
-	// 初始化日志
-	// 设置前缀
-	log.SetPrefix("ContainerService: ")
-	// 设置格式
-	log.SetFlags(log.Ldate | log.Ltime | log.Lmicroseconds)
-
 	containerService := ContainerService{
 		service: service,
 		cli:     cli,
