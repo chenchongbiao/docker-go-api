@@ -34,12 +34,12 @@ func NewContainerService(service *dbusutil.Service, cli *client.Client) *Contain
 	}
 	err := service.Export(dbusPath, &containerService)
 	if err != nil {
-		log.Panic(err)
+		log.Println(err)
 	}
 
 	err = service.RequestName(dbusServiceName)
 	if err != nil {
-		log.Panic(err)
+		log.Println(err)
 	}
 	return &containerService
 }
@@ -48,7 +48,7 @@ func (c *ContainerService) GetContainerList() (result string, busErr *dbus.Error
 	ctx := context.Background()
 	containers, err := c.cli.ContainerList(ctx, types.ContainerListOptions{All: true})
 	if err != nil {
-		log.Fatal("获取容器列表失败", err)
+		log.Println("获取容器列表失败", err)
 		result = "获取容器列表失败"
 		return result, nil
 	}
