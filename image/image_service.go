@@ -34,12 +34,12 @@ func NewImageService(service *dbusutil.Service, cli *client.Client) *ImageServic
 	}
 	err := service.Export(dbusPath, &imageService)
 	if err != nil {
-		log.Panic(err)
+		log.Println(err)
 	}
 
 	err = service.RequestName(dbusServiceName)
 	if err != nil {
-		log.Panic(err)
+		log.Println(err)
 	}
 	return &imageService
 }
@@ -48,7 +48,7 @@ func (image *ImageService) GetImageList() (result string, busErr *dbus.Error) {
 	ctx := context.Background()
 	images, err := image.cli.ImageList(ctx, types.ImageListOptions{})
 	if err != nil {
-		log.Panic("镜像列表获取失败", err)
+		log.Println("镜像列表获取失败", err)
 	}
 
 	list, _ := json.Marshal(images)
