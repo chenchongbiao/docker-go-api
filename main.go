@@ -33,10 +33,10 @@ func main() {
 		log.Panic("dbus服务初始化失败")
 	}
 
-	con := container.NewContainerService(service, cli)
+	_ = container.NewContainerService(service, cli)
 	log.Println("容器服务启动成功")
 
-	img := image.NewImageService(service, cli)
+	_ = image.NewImageService(service, cli)
 	log.Println("镜像服务启动成功")
 
 	service.Wait()
