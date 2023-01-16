@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/bluesky/docker-go-api/container"
+	"github.com/bluesky/docker-go-api/image"
 	"github.com/docker/docker/client"
 	"github.com/linuxdeepin/go-lib/dbusutil"
 )
@@ -27,19 +28,16 @@ var (
 )
 
 func main() {
-	// 初始化日志
-	// 设置前缀
-	log.SetPrefix("main: ")
-	// 设置格式
-	log.SetFlags(log.Ldate | log.Ltime | log.Lmicroseconds)
-
 	service, err := dbusutil.NewSessionService()
 	if err != nil {
 		log.Panic("dbus服务初始化失败")
 	}
 
 	con := container.NewContainerService(service, cli)
-	log.Println("容器服务启动成功", con)
+	log.Println("容器服务启动成功")
+
+	img := image.NewImageService(service, cli)
+	log.Println("镜像服务启动成功")
 
 	service.Wait()
 }
