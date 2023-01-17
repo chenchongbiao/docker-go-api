@@ -10,8 +10,18 @@ import (
 	"github.com/docker/docker/client"
 )
 
-func ImageConvert(cli *client.Client, imageSummary types.ImageSummary, verbose bool) map[string]interface{} {
-	ctx := context.Background()
+type ImageConvertor struct {
+	cli *client.Client
+}
+
+func NewImageConvertor(cli *client.Client) *ImageConvertor {
+	imgConveror := ImageConvertor{
+		cli: cli,
+	}
+	return &imgConveror
+}
+
+func (i *ImageConvertor) ImageConvert(imageSummary types.ImageSummary, verbose bool) map[string]interface{} {
 	var imgMap map[string]interface{}        // 保存镜像的结构体转换的map
 	var imgInspectMap map[string]interface{} // 保存镜像
 
@@ -31,7 +41,7 @@ func ImageConvert(cli *client.Client, imageSummary types.ImageSummary, verbose b
 	}
 
 	if verbose == true {
-		imgInspect, _, _ := cli.ImageInspectWithRaw(ctx, id)
+		imgInspect, _, _ := i.cli.ImageInspectWithRaw(context.Background(), id)
 		imgInspectJson, _ := json.Marshal(imgInspect) // 镜像的ImageInspect类型转换Json字符串
 		// _ = json.Unmarshal([]byte(imgInspectByte), &imgInspectMap) // 镜像的Json类型转换Map
 		json.NewDecoder(strings.NewReader(string(imgInspectJson))).Decode(&imgInspectMap)
@@ -52,8 +62,11 @@ func ImageConvert(cli *client.Client, imageSummary types.ImageSummary, verbose b
 		item["open_stdin"] = config["OpenStdin"]
 		item["architecture"] = imgInspectMap["Architecture"]
 		item["os"] = imgInspectMap["Os"]
-		item["ports"] = PortConvert(config["ExposedPorts"].(map[string]interface{}))
-
+		if config["ExposedPorts"] != nil {
+			item["ports"] = PortConvert(config["ExposedPorts"].(map[string]interface{}))
+		} else {
+			item["ports"] = ""
+		}
 	}
 
 	if 1 == 0 {
