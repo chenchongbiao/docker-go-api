@@ -1,10 +1,13 @@
 package main
 
 import (
+	"context"
 	"log"
 
+	"github.com/bluesky/docker-go-api/convertor"
 	"github.com/bluesky/docker-go-api/service/container"
 	"github.com/bluesky/docker-go-api/service/image"
+	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/linuxdeepin/go-lib/dbusutil"
 )
@@ -39,17 +42,12 @@ func main() {
 	_ = image.NewImageService(service, cli)
 	log.Println("镜像服务启动成功")
 
-	// itemByte, _ := json.Marshal(item)
-	// fmt.Println(string(itemByte))
-	// for _, i := range images {
-	// 	fmt.Println(i)
-	// }
-	// var dataMap map[string]interface{}
-	// err = json.Unmarshal([]byte(list), &dataMap)
-	// if err != nil {
-	// 	fmt.Printf("Json串转化为Map失败,异常:%s\n", err)
-	// }
-	// fmt.Println(dataMap["Id"])
-	// fmt.Printf("%v", images[0])
+	if 1 == 1 {
+		containers, _ := cli.ContainerList(context.Background(), types.ContainerListOptions{All: true})
+		// fmt.Printf("%#v\n", containers[0])
+
+		n := convertor.NewContainerConvertor(cli)
+		n.ContainerConvert(containers[0], true)
+	}
 	service.Wait()
 }
