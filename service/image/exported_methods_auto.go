@@ -7,8 +7,14 @@ import (
 func (img *ImageService) GetExportedMethods() dbusutil.ExportedMethods {
 	return dbusutil.ExportedMethods{
 		{
-			Name:    "GetImageList",
+			Name:    "GetImageList", // 获取镜像列表
 			Fn:      img.GetImageList,
+			OutArgs: []string{"result"},
+		},
+		{
+			Name:    "SearchImageById", // 根据镜像id获取镜像
+			Fn:      img.SearchImageById,
+			InArgs:  []string{"id"},
 			OutArgs: []string{"result"},
 		},
 	}
