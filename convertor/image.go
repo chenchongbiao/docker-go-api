@@ -22,8 +22,7 @@ func NewImageConvertor(cli *client.Client) *ImageConvertor {
 }
 
 func (i *ImageConvertor) ImageConvert(image types.ImageSummary, verbose bool) map[string]interface{} {
-	var imgMap map[string]interface{}        // 保存镜像信息的map
-	var imgInspectMap map[string]interface{} // 保存镜像详细信息的map
+	var imgMap map[string]interface{} // 保存镜像信息的map
 
 	imgJson, _ := json.Marshal(image) // 镜像的ImageSummary类型转换编码成json字符串
 	// _ = json.Unmarshal([]byte(imgByte), &imgMap) // 镜像的json字符串类型转换Map
@@ -41,6 +40,7 @@ func (i *ImageConvertor) ImageConvert(image types.ImageSummary, verbose bool) ma
 	}
 
 	if verbose == true {
+		var imgInspectMap map[string]interface{} // 保存镜像详细信息的map
 		imgInspect, _, _ := i.cli.ImageInspectWithRaw(context.Background(), id)
 		imgInspectJson, _ := json.Marshal(imgInspect) // 镜像的ImageInspect类型转换Json字符串
 		// _ = json.Unmarshal([]byte(imgInspectByte), &imgInspectMap) // 镜像的Json类型转换Map
