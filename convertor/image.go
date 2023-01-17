@@ -3,6 +3,8 @@ package convertor
 import (
 	"context"
 	"encoding/json"
+	"fmt"
+	"strings"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
@@ -13,8 +15,9 @@ func ImageConvert(cli *client.Client, imageSummary types.ImageSummary, verbose b
 	var imgMap map[string]interface{}        // 保存镜像的结构体转换的map
 	var imgInspectMap map[string]interface{} // 保存镜像
 
-	imgByte, _ := json.Marshal(imageSummary)     // 镜像的ImageSummary类型转换byte数组
-	_ = json.Unmarshal([]byte(imgByte), &imgMap) // 镜像的byte数组类型转换Map
+	imgJson, _ := json.Marshal(imageSummary) // 镜像的ImageSummary类型转换编码成json字符串
+	// _ = json.Unmarshal([]byte(imgByte), &imgMap) // 镜像的json字符串类型转换Map
+	json.NewDecoder(strings.NewReader(string(imgJson))).Decode(&imgMap)
 
 	// 获取镜像id
 	id, _ := imgMap["Id"].(string)
@@ -29,8 +32,10 @@ func ImageConvert(cli *client.Client, imageSummary types.ImageSummary, verbose b
 
 	if verbose == true {
 		imgInspect, _, _ := cli.ImageInspectWithRaw(ctx, id)
-		imgInspectByte, _ := json.Marshal(imgInspect)              // 镜像的ImageInspect类型转换byte数组
-		_ = json.Unmarshal([]byte(imgInspectByte), &imgInspectMap) // 镜像的byte数组类型转换Map
+		imgInspectJson, _ := json.Marshal(imgInspect) // 镜像的ImageInspect类型转换Json字符串
+		// _ = json.Unmarshal([]byte(imgInspectByte), &imgInspectMap) // 镜像的Json类型转换Map
+		json.NewDecoder(strings.NewReader(string(imgInspectJson))).Decode(&imgInspectMap)
+
 		// config := imgInspectMap["Config"]
 		config := imgInspectMap["Config"].(map[string]interface{})
 		if config["Cmd"] != nil {
@@ -51,14 +56,10 @@ func ImageConvert(cli *client.Client, imageSummary types.ImageSummary, verbose b
 
 	}
 
-	if 1 == 1 {
-		// fmt.Printf("镜像数据的json   %v\n", string(imgByte))
+	if 1 == 0 {
+		mapJson, _ := json.Marshal(imgMap)
+		fmt.Printf("镜像数据的json   %v\n", string(mapJson))
 
 	}
-	// fmt.Println(string(imgInspectByte))
-
-	// itemByte, err := json.Marshal(item)
-
-	// fmt.Println(string(itemByte))
 	return item
 }
