@@ -66,12 +66,12 @@ func (i *ImageAdapter) Convert(cli *client.Client, imageSummary types.ImageSumma
 }
 
 func (i *ImageAdapter) List(imagesSummary []types.ImageSummary) []map[string]interface{} {
-	items := make([]map[string]interface{}, len(imagesSummary))
+	items := make([]map[string]interface{}, 0, len(imagesSummary))
 	for index := range imagesSummary {
 		item := i.convertor.ImageConvert(imagesSummary[index], true)
 		// fmt.Printf("%#v\n", item)
 		items = append(items, item)
 	}
-	// fmt.Printf("%#v", images)
+	// fmt.Printf("%#v", items)
 	return items
 }

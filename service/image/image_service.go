@@ -3,7 +3,6 @@ package image
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 
 	"github.com/bluesky/docker-go-api/adapter"
@@ -60,7 +59,7 @@ func (i *ImageService) GetImageList() (result string, busErr *dbus.Error) {
 	}
 	resultJson, _ := json.Marshal(resultMap)
 	result = string(resultJson)
-	fmt.Printf("%#v\n", resultMap)
+	// fmt.Printf("%#v\n", resultMap)
 
 	return result, nil
 }
