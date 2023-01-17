@@ -21,11 +21,11 @@ func NewImageConvertor(cli *client.Client) *ImageConvertor {
 	return &imgConveror
 }
 
-func (i *ImageConvertor) ImageConvert(imageSummary types.ImageSummary, verbose bool) map[string]interface{} {
-	var imgMap map[string]interface{}        // 保存镜像的结构体转换的map
-	var imgInspectMap map[string]interface{} // 保存镜像
+func (i *ImageConvertor) ImageConvert(image types.ImageSummary, verbose bool) map[string]interface{} {
+	var imgMap map[string]interface{}        // 保存镜像信息的map
+	var imgInspectMap map[string]interface{} // 保存镜像详细信息的map
 
-	imgJson, _ := json.Marshal(imageSummary) // 镜像的ImageSummary类型转换编码成json字符串
+	imgJson, _ := json.Marshal(image) // 镜像的ImageSummary类型转换编码成json字符串
 	// _ = json.Unmarshal([]byte(imgByte), &imgMap) // 镜像的json字符串类型转换Map
 	json.NewDecoder(strings.NewReader(string(imgJson))).Decode(&imgMap)
 
