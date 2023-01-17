@@ -1,13 +1,11 @@
 package main
 
 import (
-	"context"
 	"log"
 
-	"github.com/bluesky/docker-go-api/container"
-	"github.com/bluesky/docker-go-api/convertor"
-	"github.com/bluesky/docker-go-api/image"
-	"github.com/docker/docker/api/types"
+	"github.com/bluesky/docker-go-api/adapter"
+	"github.com/bluesky/docker-go-api/service/container"
+	"github.com/bluesky/docker-go-api/service/image"
 	"github.com/docker/docker/client"
 	"github.com/linuxdeepin/go-lib/dbusutil"
 )
@@ -39,15 +37,16 @@ func main() {
 	_ = container.NewContainerService(service, cli)
 	log.Println("容器服务启动成功")
 
-	_ = image.NewImageService(service, cli)
+	img := image.NewImageService(service, cli)
 	log.Println("镜像服务启动成功")
 
-	ctx := context.Background()
-	images, err := cli.ImageList(ctx, types.ImageListOptions{})
-	// list, _ := json.Marshal(images[0])
-	// fmt.Println(string(list))
-
-	convertor.ImageConvert(images[0])
+	if 1 == 1 {
+		_, _ = img.GetImageList()
+		i := adapter.ImageAdapter{Cli: cli}
+		i.Item("605c77e624ddb75e6110f997c58876baa13f8754486b461117934b24a9dc3a85")
+	}
+	// itemByte, _ := json.Marshal(item)
+	// fmt.Println(string(itemByte))
 	// for _, i := range images {
 	// 	fmt.Println(i)
 	// }
