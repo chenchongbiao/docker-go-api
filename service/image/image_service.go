@@ -33,9 +33,7 @@ func NewImageService(service *dbusutil.Service, cli *client.Client) *ImageServic
 	imageService := ImageService{
 		service: service,
 		cli:     cli,
-		adapter: &adapter.ImageAdapter{
-			Cli: cli,
-		},
+		adapter: adapter.NewImageAdapter(cli),
 	}
 
 	err := service.Export(dbusPath, &imageService)
@@ -55,16 +53,14 @@ func (i *ImageService) GetImageList() (result string, busErr *dbus.Error) {
 	if err != nil {
 		log.Println("镜像列表获取失败", err)
 	}
-
-	// for _, image := range images {
-	// 	fmt.Printf("%#v \n\n", image)
-	// }
-
-	list, _ := json.Marshal(images)
-	result = string(list)
-
-	if 1 == 0 {
-		fmt.Printf(result)
+	items := i.adapter.List(images)
+	resultMap := map[string]interface{}{
+		"status": true,
+		"data":   items,
 	}
+	resultJson, _ := json.Marshal(resultMap)
+	result = string(resultJson)
+	fmt.Printf("%#v\n", resultMap)
+
 	return result, nil
 }
