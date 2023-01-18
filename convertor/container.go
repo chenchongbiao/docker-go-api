@@ -3,7 +3,6 @@ package convertor
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"strings"
 
 	"github.com/docker/docker/api/types"
@@ -77,7 +76,7 @@ func (c *ContainerConvertor) ContainerConvert(container types.Container, verbose
 		}
 		// mounts=MountsConvertor.from_docker(attrs['Mounts']),
 		item["mounts"] = MountsConvert(conMap["Mounts"].([]interface{}))
-		fmt.Printf("%#v", item)
+		// fmt.Printf("%#v\n", item)
 
 	}
 
