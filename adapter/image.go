@@ -61,14 +61,14 @@ func (i *ImageAdapter) Item(id string) map[string]interface{} {
 /*
 传入转换器，构造数据
 */
-func (i *ImageAdapter) Convert(imageSummary types.ImageSummary, verbose bool) map[string]interface{} {
-	return i.convertor.ImageConvert(imageSummary, verbose)
+func (i *ImageAdapter) Convert(image types.ImageSummary, verbose bool) map[string]interface{} {
+	return i.convertor.ImageConvert(image, verbose)
 }
 
-func (i *ImageAdapter) List(imagesSummary []types.ImageSummary) []map[string]interface{} {
-	items := make([]map[string]interface{}, 0, len(imagesSummary))
-	for index := range imagesSummary {
-		item := i.convertor.ImageConvert(imagesSummary[index], true)
+func (i *ImageAdapter) List(images []types.ImageSummary) []map[string]interface{} {
+	items := make([]map[string]interface{}, 0, len(images))
+	for index := range images {
+		item := i.convertor.ImageConvert(images[index], true)
 		// fmt.Printf("%#v\n", item)
 		items = append(items, item)
 	}
