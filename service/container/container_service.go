@@ -3,9 +3,9 @@ package container
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 
+	"github.com/bluesky/docker-go-api/adapter"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/godbus/dbus"
@@ -21,6 +21,7 @@ const (
 type ContainerService struct {
 	service *dbusutil.Service
 	cli     *client.Client
+	adapter *adapter.ContainerAdapter
 }
 
 func (c *ContainerService) GetInterfaceName() string {
@@ -31,6 +32,7 @@ func NewContainerService(service *dbusutil.Service, cli *client.Client) *Contain
 	containerService := ContainerService{
 		service: service,
 		cli:     cli,
+		adapter: adapter.NewContainerAdapter(cli),
 	}
 	err := service.Export(dbusPath, &containerService)
 	if err != nil {
@@ -52,11 +54,18 @@ func (c *ContainerService) GetContainerList() (result string, busErr *dbus.Error
 		result = "获取容器列表失败"
 		return result, nil
 	}
+	log.Println("容器列表获取成功")
 
-	// defer out.Close()
-	// io.Copy(os.Stdout, out)
-	list, _ := json.Marshal(containers)
-	result = string(list)
-	fmt.Println("容器列表获取成功")
+	_ = c.adapter.List(containers)
+	// fmt.Printf("%#v\n", items)
+	resultMap := map[string]interface{}{
+		"status": true,
+		"data":   containers,
+	}
+
+	// 将map转换为json数据
+	resultJson, _ := json.Marshal(resultMap)
+	result = string(resultJson)
+
 	return result, nil
 }
