@@ -61,7 +61,7 @@ func (i *ImageAdapter) Item(id string) map[string]interface{} {
 /*
 传入转换器，构造数据
 */
-func (i *ImageAdapter) Convert(cli *client.Client, imageSummary types.ImageSummary, verbose bool) map[string]interface{} {
+func (i *ImageAdapter) Convert(imageSummary types.ImageSummary, verbose bool) map[string]interface{} {
 	return i.convertor.ImageConvert(imageSummary, verbose)
 }
 
