@@ -3,7 +3,6 @@ package convertor
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"strings"
 
 	"github.com/docker/docker/api/types"
@@ -47,6 +46,10 @@ func (c *ContainerConvertor) ContainerConvert(container types.Container, verbose
 
 	if verbose == true {
 		// var conInspectMap map[string]interface{} // 存放容器详细信息的map
+		// conInspec, _ := c.cli.ContainerInspect(context.Background(), conMap["Id"].(string))
+		// conInspecJson, _ := json.Marshal(conInspec)
+		// json.NewDecoder(strings.NewReader(string(conInspecJson))).Decode(&conInspectMap)
+
 		netSetting := conMap["NetworkSettings"].(map[string]interface{})
 
 		// 构造一个列表存放Networks里的所有key值
@@ -54,6 +57,7 @@ func (c *ContainerConvertor) ContainerConvert(container types.Container, verbose
 		for value := range netSetting["Networks"].(map[string]interface{}) {
 			netsList = append(netsList, value)
 		}
+
 		netsMap := netSetting["Networks"].(map[string]interface{})
 		nets := netsMap[netsList[0]].(map[string]interface{})
 
@@ -73,8 +77,9 @@ func (c *ContainerConvertor) ContainerConvert(container types.Container, verbose
 		}
 		// mounts=MountsConvertor.from_docker(attrs['Mounts']),
 		item["mounts"] = MountsConvert(conMap["Mounts"].([]interface{}))
-		fmt.Printf("%#v", item)
+		// fmt.Printf("%#v", item)
 
 	}
+
 	return item
 }
