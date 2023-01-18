@@ -15,13 +15,16 @@ func MountsConvert(mounts []interface{}) []map[string]interface{} {
 	var result []map[string]interface{}
 	for _, value := range mounts {
 		mount := value.(map[string]interface{})
+		// fmt.Printf("%#v\n", mount)
 		result = append(result, map[string]interface{}{
-			"rw":   mount["RW"],
-			"dest": mount["Destination"],
-			"mode": mount["Mode"],
-			"src":  mount["Source"],
-			"prop": mount["Source"],
-			"type": mount["Type"],
+			"rw":     mount["RW"],
+			"dest":   mount["Destination"],
+			"mode":   mount["Mode"],
+			"src":    mount["Source"],
+			"prop":   mount["Propagation"],
+			"type":   mount["Type"],
+			"name":   mount["Name"],
+			"driver": mount["Driver"],
 		})
 	}
 	return result
