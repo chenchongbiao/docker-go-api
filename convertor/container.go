@@ -3,6 +3,7 @@ package convertor
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"strings"
 
 	"github.com/docker/docker/api/types"
@@ -28,7 +29,6 @@ func (c *ContainerConvertor) ContainerConvert(container types.Container, verbose
 
 	containerJson, _ := json.Marshal(container) // 将容器的结构体数据转换为json数据
 	json.NewDecoder(strings.NewReader(string(containerJson))).Decode(&conMap)
-	// fmt.Printf("%#v\n", conMap)
 
 	// 根据Image获取镜像
 	filter := filters.NewArgs()
@@ -77,7 +77,7 @@ func (c *ContainerConvertor) ContainerConvert(container types.Container, verbose
 		}
 		// mounts=MountsConvertor.from_docker(attrs['Mounts']),
 		item["mounts"] = MountsConvert(conMap["Mounts"].([]interface{}))
-		// fmt.Printf("%#v", item)
+		fmt.Printf("%#v", item)
 
 	}
 
