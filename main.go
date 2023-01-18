@@ -6,7 +6,6 @@ import (
 	"log"
 	"strings"
 
-	"github.com/bluesky/docker-go-api/convertor"
 	"github.com/bluesky/docker-go-api/service/container"
 	"github.com/bluesky/docker-go-api/service/image"
 	"github.com/docker/docker/api/types/volume"
@@ -57,10 +56,10 @@ func main() {
 		var vMap map[string]interface{}
 		vJson, _ := json.Marshal(volumes)
 		json.NewDecoder(strings.NewReader(string(vJson))).Decode(&vMap)
-		vList := vMap["Volumes"].([]interface{})
+		_ = vMap["Volumes"].([]interface{})
 
-		v := convertor.NewVolumeConvert(cli)
-		v.VolumeConvert(vList[0].(map[string]interface{}))
+		// v := convertor.NewVolumeConvert(cli)
+		// convertor.VolumeConvert(vList[0].(map[string]interface{}))
 	}
 	service.Wait()
 }
