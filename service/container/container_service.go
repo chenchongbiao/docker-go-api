@@ -56,11 +56,11 @@ func (c *ContainerService) GetContainerList() (result string, busErr *dbus.Error
 	}
 	log.Println("容器列表获取成功")
 
-	_ = c.adapter.List(containers)
-	// fmt.Printf("%#v\n", items)
+	items := c.adapter.List(containers)
+
 	resultMap := map[string]interface{}{
 		"status": true,
-		"data":   containers,
+		"data":   items,
 	}
 
 	// 将map转换为json数据
