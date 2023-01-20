@@ -11,5 +11,11 @@ func (con *ContainerService) GetExportedMethods() dbusutil.ExportedMethods {
 			Fn:      con.GetContainerList,
 			OutArgs: []string{"result"},
 		},
+		{
+			Name:   "StartContainer",
+			Fn:     con.StartContainer,
+			InArgs: []string{"ids"},
+			// OutArgs: []string{"result"},
+		},
 	}
 }
