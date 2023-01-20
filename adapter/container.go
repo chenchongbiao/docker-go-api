@@ -1,8 +1,6 @@
 package adapter
 
 import (
-	"fmt"
-
 	"github.com/bluesky/docker-go-api/convertor"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
@@ -31,7 +29,7 @@ func (c *ContainerAdapter) List(containers []types.Container) []map[string]inter
 	items := make([]map[string]interface{}, 0, len(containers))
 	for _, container := range containers {
 		item := c.convertor.ContainerConvert(container, true)
-		fmt.Printf("%#v\n", item)
+		// fmt.Printf("%#v\n", item)
 		items = append(items, item)
 	}
 
