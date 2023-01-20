@@ -82,3 +82,10 @@ func (c *ContainerService) StartContainer(ids []string) (busErr *dbus.Error) {
 	// log.Println("容器启动成功")
 	return nil
 }
+
+func (c *ContainerService) StopContainer(ids []string) (busErr *dbus.Error) {
+	for _, id := range ids {
+		c.adapter.Stop(id)
+	}
+	return nil
+}
