@@ -1,6 +1,8 @@
 package adapter
 
 import (
+	"context"
+
 	"github.com/bluesky/docker-go-api/convertor"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
@@ -34,4 +36,12 @@ func (c *ContainerAdapter) List(containers []types.Container) []map[string]inter
 	}
 
 	return items
+}
+
+func (c *ContainerAdapter) Start(id string) bool {
+	err := c.cli.ContainerStart(context.Background(), id, types.ContainerStartOptions{})
+	if err != nil {
+		return false
+	}
+	return true
 }

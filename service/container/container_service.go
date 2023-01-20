@@ -3,7 +3,6 @@ package container
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 
 	"github.com/bluesky/docker-go-api/adapter"
@@ -71,9 +70,9 @@ func (c *ContainerService) GetContainerList() (result string, busErr *dbus.Error
 	return result, nil
 }
 
-func (c *ContainerService) StartContainer(ids string) (busErr *dbus.Error) {
-	for id := range ids {
-		fmt.Printf("%#v\n", id)
+func (c *ContainerService) StartContainer(ids []string) (busErr *dbus.Error) {
+	for _, id := range ids {
+		c.adapter.Start(id)
 	}
 	// err := c.cli.ContainerStart(context.Background(), ids, types.ContainerStartOptions{})
 	// if err != nil {
