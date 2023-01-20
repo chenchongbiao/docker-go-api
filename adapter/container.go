@@ -2,9 +2,11 @@ package adapter
 
 import (
 	"context"
+	"time"
 
 	"github.com/bluesky/docker-go-api/convertor"
 	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 )
 
@@ -40,6 +42,15 @@ func (c *ContainerAdapter) List(containers []types.Container) []map[string]inter
 
 func (c *ContainerAdapter) Start(id string) bool {
 	err := c.cli.ContainerStart(context.Background(), id, types.ContainerStartOptions{})
+	if err != nil {
+		return false
+	}
+	return true
+}
+
+func (c *ContainerAdapter) Stop(id string) bool {
+	timeout := int(time.Minute * 2)
+	err := c.cli.ContainerStop(context.Background(), id, container.StopOptions{Timeout: &timeout})
 	if err != nil {
 		return false
 	}
