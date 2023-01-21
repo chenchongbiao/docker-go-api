@@ -60,11 +60,8 @@ func (c *ContainerAdapter) Stop(id string) bool {
 func (c *ContainerAdapter) Restart(id string) bool {
 	timeout := int(time.Minute * 2)
 
-	err := c.cli.ContainerStart(context.Background(), id, types.ContainerStartOptions{})
-	if err != nil {
-		return false
-	}
-	err = c.cli.ContainerStop(context.Background(), id, container.StopOptions{Timeout: &timeout})
+	err := c.cli.ContainerStop(context.Background(), id, container.StopOptions{Timeout: &timeout})
+	err = c.cli.ContainerStart(context.Background(), id, types.ContainerStartOptions{})
 	if err != nil {
 		return false
 	}
