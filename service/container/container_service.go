@@ -89,3 +89,10 @@ func (c *ContainerService) StopContainer(ids []string) (busErr *dbus.Error) {
 	}
 	return nil
 }
+
+func (c *ContainerService) RestartContainer(ids []string) (busErr *dbus.Error) {
+	for _, id := range ids {
+		c.adapter.Restart(id)
+	}
+	return nil
+}
