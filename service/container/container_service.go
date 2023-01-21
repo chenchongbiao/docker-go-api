@@ -3,6 +3,7 @@ package container
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 
 	"github.com/bluesky/docker-go-api/adapter"
@@ -47,13 +48,16 @@ func NewContainerService(service *dbusutil.Service, cli *client.Client) *Contain
 	return &containerService
 }
 
-func (c *ContainerService) GetContainerList(containerName string) (result string, busErr *dbus.Error) {
+func (c *ContainerService) GetContainerList(args map[string]interface{}) (result string, busErr *dbus.Error) {
 	var options types.ContainerListOptions
-	if containerName == "" {
+	if args == nil {
 		options = types.ContainerListOptions{All: true}
 	} else {
 		filter := filters.NewArgs()
-		filter.Add("name", containerName)
+		for k := range args {
+			fmt.Printf("%#v\n", k)
+			filter.Add(k, args[k].(string))
+		}
 		options = types.ContainerListOptions{Filters: filter}
 	}
 
