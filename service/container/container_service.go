@@ -7,6 +7,7 @@ import (
 
 	"github.com/bluesky/docker-go-api/adapter"
 	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/filters"
 	"github.com/docker/docker/client"
 	"github.com/godbus/dbus"
 	"github.com/linuxdeepin/go-lib/dbusutil"
@@ -46,9 +47,17 @@ func NewContainerService(service *dbusutil.Service, cli *client.Client) *Contain
 	return &containerService
 }
 
-func (c *ContainerService) GetContainerList() (result string, busErr *dbus.Error) {
-	ctx := context.Background()
-	containers, err := c.cli.ContainerList(ctx, types.ContainerListOptions{All: true})
+func (c *ContainerService) GetContainerList(containerName string) (result string, busErr *dbus.Error) {
+	var options types.ContainerListOptions
+	if containerName == "" {
+		options = types.ContainerListOptions{All: true}
+	} else {
+		filter := filters.NewArgs()
+		filter.Add("name", containerName)
+		options = types.ContainerListOptions{Filters: filter}
+	}
+
+	containers, err := c.cli.ContainerList(context.Background(), options)
 	if err != nil {
 		log.Println("获取容器列表失败", err)
 		result = "获取容器列表失败"
