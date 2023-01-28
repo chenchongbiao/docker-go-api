@@ -8,6 +8,7 @@ import (
 
 	"github.com/bluesky/docker-go-api/service/container"
 	"github.com/bluesky/docker-go-api/service/image"
+	"github.com/bluesky/docker-go-api/service/network"
 	"github.com/docker/docker/api/types/volume"
 	"github.com/docker/docker/client"
 	"github.com/linuxdeepin/go-lib/dbusutil"
@@ -42,6 +43,9 @@ func main() {
 
 	_ = image.NewImageService(service, cli)
 	log.Println("镜像服务启动成功")
+
+	_ = network.NewNetworkService(service, cli)
+	log.Println("网络服务启动成功")
 
 	if 1 == 1 {
 		// containers, _ := cli.ContainerList(context.Background(), types.ContainerListOptions{All: true})
