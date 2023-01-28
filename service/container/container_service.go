@@ -3,7 +3,6 @@ package container
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 
 	"github.com/bluesky/docker-go-api/adapter"
@@ -55,7 +54,7 @@ func (c *ContainerService) GetContainerList(args map[string]interface{}) (result
 	} else {
 		filter := filters.NewArgs()
 		for k := range args {
-			fmt.Printf("%#v\n", k)
+			// fmt.Printf("%#v\n", k)
 			filter.Add(k, args[k].(string))
 		}
 		options = types.ContainerListOptions{Filters: filter}
