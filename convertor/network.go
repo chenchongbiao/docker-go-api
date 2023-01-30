@@ -39,7 +39,8 @@ func (n *NetworkConvertor) NetworkConvert(network types.NetworkResource, verbose
 		ipam := netMap["IPAM"].(map[string]interface{})
 
 		ipam_cfg_list := ipam["Config"].([]interface{})
-		if ipam_cfg_list != nil {
+		// fmt.Printf("%#v\n", len(ipam_cfg_list))
+		if len(ipam_cfg_list) != 0 {
 			ipam_cfg := ipam_cfg_list[0].(map[string]interface{})
 			item["subnet"] = ipam_cfg["Subnet"]
 			item["gateway"] = ipam_cfg["Gateway"]
@@ -49,11 +50,11 @@ func (n *NetworkConvertor) NetworkConvert(network types.NetworkResource, verbose
 		item["ipam_driver"] = ipam["Driver"]
 		item["internal"] = ipam["Internal"]
 		item["attachable"] = ipam["Attachable"]
-		item["options"] = ipam["Options"]
-
+		item["options"] = netMap["Options"]
+		// item["containers"] = netMap["Containers"] // 没有返回信息暂时不使用
 		// containers=[ContainerConvertor.from_docker(i, True) for i in containers]
 	}
 
-	fmt.Printf("%#v\n", netMap)
+	fmt.Printf("%#v\n", item)
 	return item
 }
