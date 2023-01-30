@@ -49,7 +49,7 @@ func NewContainerService(service *dbusutil.Service, cli *client.Client) *Contain
 
 func (c *ContainerService) GetContainerList(args map[string]interface{}) (result string, busErr *dbus.Error) {
 	var options types.ContainerListOptions
-	if args == nil {
+	if len(args) == 0 {
 		options = types.ContainerListOptions{All: true}
 	} else {
 		filter := filters.NewArgs()
