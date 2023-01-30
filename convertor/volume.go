@@ -1,17 +1,19 @@
 package convertor
 
-// type VolumeConvertor struct {
-// 	cli *client.Client
-// }
+import "github.com/docker/docker/client"
 
-// func NewVolumeConvert(cli *client.Client) *VolumeConvertor {
-// 	volumeConvertor := VolumeConvertor{
-// 		cli: cli,
-// 	}
-// 	return &volumeConvertor
-// }
+type VolumeConvertor struct {
+	cli *client.Client
+}
 
-func VolumeConvert(volume map[string]interface{}) map[string]interface{} {
+func NewVolumeConvert(cli *client.Client) *VolumeConvertor {
+	volumeConvertor := VolumeConvertor{
+		cli: cli,
+	}
+	return &volumeConvertor
+}
+
+func (v *VolumeConvertor) VolumeConvert(volume map[string]interface{}, verbose bool) map[string]interface{} {
 	item := map[string]interface{}{
 		"name":        volume["Name"],
 		"driver":      volume["Driver"],
