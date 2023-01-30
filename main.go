@@ -1,15 +1,14 @@
 package main
 
 import (
-	"context"
-	"encoding/json"
 	"log"
-	"strings"
 
 	"github.com/bluesky/docker-go-api/service/container"
 	"github.com/bluesky/docker-go-api/service/image"
 	"github.com/bluesky/docker-go-api/service/network"
-	"github.com/docker/docker/api/types/volume"
+	"github.com/bluesky/docker-go-api/service/volume"
+
+	// "github.com/docker/docker/api/types/volume"
 	"github.com/docker/docker/client"
 	"github.com/linuxdeepin/go-lib/dbusutil"
 )
@@ -47,19 +46,22 @@ func main() {
 	_ = network.NewNetworkService(service, cli)
 	log.Println("网络服务启动成功")
 
+	_ = volume.NewVolumeService(service, cli)
+	log.Println("存储服务启动成功")
+
 	if 1 == 1 {
 		// containers, _ := cli.ContainerList(context.Background(), types.ContainerListOptions{All: true})
 		// fmt.Printf("%#v\n", containers[0])
 
 		// n := convertor.NewContainerConvertor(cli)
 		// n.ContainerConvert(containers[0], true)
-		volumes, _ := cli.VolumeList(context.Background(), volume.ListOptions{
-			// Filters: filters.NewArgs(filters.Arg("name", volName)),
-		})
+		// volumes, _ := cli.VolumeList(context.Background(), volume.ListOptions{
+		// 	// Filters: filters.NewArgs(filters.Arg("name", volName)),
+		// })
 
-		var vMap map[string]interface{}
-		vJson, _ := json.Marshal(volumes)
-		json.NewDecoder(strings.NewReader(string(vJson))).Decode(&vMap)
+		// var vMap map[string]interface{}
+		// vJson, _ := json.Marshal(volumes)
+		// json.NewDecoder(strings.NewReader(string(vJson))).Decode(&vMap)
 		// _ = vMap["Volumes"].([]interface{})
 
 		// v := convertor.NewVolumeConvert(cli)
