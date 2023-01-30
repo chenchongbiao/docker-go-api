@@ -2,7 +2,6 @@ package convertor
 
 import (
 	"encoding/json"
-	"fmt"
 	"strings"
 
 	"github.com/docker/docker/api/types"
@@ -27,12 +26,14 @@ func (n *NetworkConvertor) NetworkConvert(network types.NetworkResource, verbose
 	json.NewDecoder(strings.NewReader(string(networkJson))).Decode(&netMap)
 
 	item := map[string]interface{}{
-		"id":            netMap["Id"],
-		"name":          netMap["Name"],
-		"driver":        netMap["Driver"],
-		"scope":         netMap["Scope"],
-		"create_time":   netMap["Created"],
-		"container_num": len(netMap["Containers"].(map[string]interface{})),
+		"id":          netMap["Id"],
+		"name":        netMap["Name"],
+		"driver":      netMap["Driver"],
+		"scope":       netMap["Scope"],
+		"create_time": netMap["Created"],
+	}
+	if len(netMap["Containers"].(map[string]interface{})) == 0 {
+		item["container_num"] = 0
 	}
 
 	if verbose == true {
@@ -55,6 +56,6 @@ func (n *NetworkConvertor) NetworkConvert(network types.NetworkResource, verbose
 		// containers=[ContainerConvertor.from_docker(i, True) for i in containers]
 	}
 
-	fmt.Printf("%#v\n", item)
+	// fmt.Printf("%#v\n", item)
 	return item
 }
