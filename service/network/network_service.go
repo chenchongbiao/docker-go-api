@@ -66,6 +66,6 @@ func (n *NetworkService) GetNetworkList() (result string, busErr *dbus.Error) {
 	result = string(resultJson)
 	// fmt.Printf("%#v\n", resultMap)
 
-	// fmt.Printf("%#v", nets)
+	// fmt.Printf("%#v\n", nets)
 	return result, nil
 }
