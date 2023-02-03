@@ -47,7 +47,6 @@ func NewNetworkService(service *dbusutil.Service, cli *client.Client) *NetworkSe
 	return &networkService
 }
 
-// 获取镜像列表
 func (n *NetworkService) GetNetworkList() (result string, busErr *dbus.Error) {
 	nets, err := n.cli.NetworkList(context.Background(), types.NetworkListOptions{})
 	if err != nil {
@@ -64,7 +63,7 @@ func (n *NetworkService) GetNetworkList() (result string, busErr *dbus.Error) {
 	// 将map转换为json数据
 	resultJson, _ := json.Marshal(resultMap)
 	result = string(resultJson)
-	// fmt.Printf("%#v\n", resultMap)
+	// fmt.Printf("%#v\n", result)
 
 	// fmt.Printf("%#v\n", nets)
 	return result, nil
