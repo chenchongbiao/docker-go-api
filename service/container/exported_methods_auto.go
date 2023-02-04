@@ -36,5 +36,10 @@ func (con *ContainerService) GetExportedMethods() dbusutil.ExportedMethods {
 			InArgs: []string{"ids"},
 			// OutArgs: []string{"result"},
 		},
+		{
+			Name:   "RmContainer",
+			Fn:     con.RmContainer,
+			InArgs: []string{"id"},
+		},
 	}
 }

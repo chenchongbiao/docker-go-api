@@ -121,3 +121,12 @@ func (c *ContainerService) RestartContainer(ids []string) (busErr *dbus.Error) {
 	}
 	return nil
 }
+
+func (c *ContainerService) RmContainer(id string) (busErr *dbus.Error) {
+	err := c.cli.ContainerRemove(context.Background(), id, types.ContainerRemoveOptions{Force: true})
+	if err != nil {
+		log.Println("容器删除失败 ", err.Error())
+	}
+	log.Println("容器删除成功")
+	return nil
+}
