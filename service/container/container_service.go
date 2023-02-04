@@ -82,6 +82,19 @@ func (c *ContainerService) GetContainerList(args map[string]interface{}) (result
 	return result, nil
 }
 
+func (c *ContainerService) Item(id string) (result string, busErr *dbus.Error) {
+	item := c.adapter.Item(id)
+	resultMap := map[string]interface{}{
+		"status": true,
+		"data":   item,
+	}
+	// 将map转换为json数据
+	resultJson, _ := json.Marshal(resultMap)
+	result = string(resultJson)
+	log.Println("容器数据获取成功")
+	return result, nil
+}
+
 func (c *ContainerService) StartContainer(ids []string) (busErr *dbus.Error) {
 	for _, id := range ids {
 		c.adapter.Start(id)
