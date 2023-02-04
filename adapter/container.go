@@ -7,6 +7,7 @@ import (
 	"github.com/bluesky/docker-go-api/convertor"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/filters"
 	"github.com/docker/docker/client"
 )
 
@@ -23,7 +24,13 @@ func NewContainerAdapter(cli *client.Client) *ContainerAdapter {
 	return &conAdapter
 }
 
-func (c *ContainerAdapter) Item(id string) map[string]interface{} { return nil }
+func (c *ContainerAdapter) Item(id string) map[string]interface{} {
+	filter := filters.NewArgs()
+	filter.Add("id", id)
+	containers, _ := c.cli.ContainerList(context.Background(), types.ContainerListOptions{All: true, Filters: filter})
+
+	return c.convertor.ContainerConvert(containers[0], true)
+}
 
 func (c *ContainerAdapter) Convert(container types.Container) map[string]interface{} {
 	return c.convertor.ContainerConvert(container, true)
