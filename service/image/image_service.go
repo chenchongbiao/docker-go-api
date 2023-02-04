@@ -3,7 +3,9 @@ package image
 import (
 	"context"
 	"encoding/json"
+	"io"
 	"log"
+	"os"
 
 	"github.com/bluesky/docker-go-api/adapter"
 	"github.com/docker/docker/api/types"
@@ -77,4 +79,15 @@ func (i *ImageService) SearchImageById(id string) (result string, busErr *dbus.E
 	resultJson, _ := json.Marshal(item)
 	result = string(resultJson)
 	return result, nil
+}
+
+// 拉取镜像
+func (i *ImageService) PullImage(img string) (busErr *dbus.Error) {
+	out, err := i.cli.ImagePull(context.Background(), img, types.ImagePullOptions{})
+	if err != nil {
+		log.Println("镜像拉取失败 ", err)
+	}
+	io.Copy(os.Stdout, out)
+	log.Println("镜像拉取成功")
+	return nil
 }

@@ -17,5 +17,10 @@ func (img *ImageService) GetExportedMethods() dbusutil.ExportedMethods {
 			InArgs:  []string{"id"},
 			OutArgs: []string{"result"},
 		},
+		{
+			Name:   "PullImage", // 根据镜像id获取镜像
+			Fn:     img.PullImage,
+			InArgs: []string{"img"},
+		},
 	}
 }
