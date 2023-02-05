@@ -18,8 +18,13 @@ func (img *ImageService) GetExportedMethods() dbusutil.ExportedMethods {
 			OutArgs: []string{"result"},
 		},
 		{
-			Name:   "PullImage", // 根据镜像id获取镜像
+			Name:   "PullImage", // 根据镜像名 拉取镜像
 			Fn:     img.PullImage,
+			InArgs: []string{"img"},
+		},
+		{
+			Name:   "PullPrivateImage", // 根据镜像名 拉取私有镜像
+			Fn:     img.PullPrivateImage,
 			InArgs: []string{"img"},
 		},
 	}

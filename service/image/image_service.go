@@ -2,6 +2,7 @@ package image
 
 import (
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"io"
 	"log"
@@ -89,5 +90,23 @@ func (i *ImageService) PullImage(img string) (busErr *dbus.Error) {
 	}
 	io.Copy(os.Stdout, out)
 	log.Println("镜像拉取成功")
+	return nil
+}
+
+func (i *ImageService) PullPrivateImage(img, user, password string) (busErr *dbus.Error) {
+	authConfig := types.AuthConfig{
+		Username: user,
+		Password: password,
+	}
+	encodedJson, _ := json.Marshal(authConfig)
+	authStr := base64.URLEncoding.EncodeToString(encodedJson)
+	out, err := i.cli.ImagePull(context.Background(), img, types.ImagePullOptions{RegistryAuth: authStr})
+	out.Close()
+	if err != nil {
+		log.Println("私有镜像拉取失败 ", err)
+	}
+	io.Copy(os.Stdout, out)
+	// result = "镜像拉取成功"
+	log.Println("私有镜像拉取成功")
 	return nil
 }
