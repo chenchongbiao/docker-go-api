@@ -25,7 +25,13 @@ func (img *ImageService) GetExportedMethods() dbusutil.ExportedMethods {
 		{
 			Name:   "PullPrivateImage", // 根据镜像名 拉取私有镜像
 			Fn:     img.PullPrivateImage,
-			InArgs: []string{"img"},
+			InArgs: []string{"img", "user", "password"},
+		},
+		{
+			Name:    "SearchImage",
+			Fn:      img.SearchImage,
+			InArgs:  []string{"img"},
+			OutArgs: []string{"result"},
 		},
 	}
 }
