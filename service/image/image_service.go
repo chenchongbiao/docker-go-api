@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
 	"os"
@@ -114,9 +113,15 @@ func (i *ImageService) PullPrivateImage(img, user, password string) (busErr *dbu
 
 func (i *ImageService) SearchImage(img string) (result string, busErr *dbus.Error) {
 	images, _ := i.cli.ImageSearch(context.Background(), img, types.ImageSearchOptions{})
+
+	resultMap := map[string]interface{}{
+		"status": true,
+		"data":   images,
+	}
+
 	// 将map转换为json数据
-	resultJson, _ := json.Marshal(images)
+	resultJson, _ := json.Marshal(resultMap)
 	result = string(resultJson)
-	fmt.Printf("%#v", images)
+	// fmt.Printf("%#v", images)
 	return result, nil
 }
