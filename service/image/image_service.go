@@ -125,3 +125,10 @@ func (i *ImageService) SearchImage(img string) (result string, busErr *dbus.Erro
 	// fmt.Printf("%#v", images)
 	return result, nil
 }
+
+func (i *ImageService) RemoveImage(ids []string) (busErr *dbus.Error) {
+	for _, id := range ids {
+		i.adapter.Remove(id)
+	}
+	return nil
+}

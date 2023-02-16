@@ -33,5 +33,10 @@ func (img *ImageService) GetExportedMethods() dbusutil.ExportedMethods {
 			InArgs:  []string{"img"},
 			OutArgs: []string{"result"},
 		},
+		{
+			Name:   "RemoveImage",
+			Fn:     img.RemoveImage,
+			InArgs: []string{"imageId"},
+		},
 	}
 }

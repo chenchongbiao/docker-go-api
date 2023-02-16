@@ -75,3 +75,14 @@ func (i *ImageAdapter) List(images []types.ImageSummary) []map[string]interface{
 	// fmt.Printf("%#v", items)
 	return items
 }
+
+func (i *ImageAdapter) Remove(imageId string) bool {
+	_, err := i.cli.ImageRemove(context.Background(), imageId, types.ImageRemoveOptions{
+		Force:         true,
+		PruneChildren: true,
+	})
+	if err != nil {
+		return false
+	}
+	return true
+}
