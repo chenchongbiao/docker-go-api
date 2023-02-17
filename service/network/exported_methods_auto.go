@@ -9,6 +9,7 @@ func (net *NetworkService) GetExportedMethods() dbusutil.ExportedMethods {
 		{
 			Name:    "GetNetworkList", // 获取镜像列表
 			Fn:      net.GetNetworkList,
+			InArgs:  []string{"args"},
 			OutArgs: []string{"result"},
 		},
 	}

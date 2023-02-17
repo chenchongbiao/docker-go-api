@@ -7,6 +7,7 @@ import (
 
 	"github.com/bluesky/docker-go-api/adapter"
 	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/filters"
 	"github.com/docker/docker/client"
 	"github.com/godbus/dbus"
 	"github.com/linuxdeepin/go-lib/dbusutil"
@@ -47,8 +48,20 @@ func NewNetworkService(service *dbusutil.Service, cli *client.Client) *NetworkSe
 	return &networkService
 }
 
-func (n *NetworkService) GetNetworkList() (result string, busErr *dbus.Error) {
-	nets, err := n.cli.NetworkList(context.Background(), types.NetworkListOptions{})
+func (n *NetworkService) GetNetworkList(args map[string]interface{}) (result string, busErr *dbus.Error) {
+	var options types.NetworkListOptions
+	if len(args) == 0 {
+		options = types.NetworkListOptions{}
+	} else {
+		filter := filters.NewArgs()
+		for k := range args {
+			// fmt.Printf("%#v\n", k)
+			filter.Add(k, args[k].(string))
+		}
+		options = types.NetworkListOptions{Filters: filter}
+	}
+
+	nets, err := n.cli.NetworkList(context.Background(), options)
 	if err != nil {
 		log.Println("网络列表获取失败", err)
 	}
