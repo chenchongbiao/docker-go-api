@@ -63,7 +63,6 @@ func (c *ContainerService) GetContainerList(args map[string]interface{}) (result
 	containers, err := c.cli.ContainerList(context.Background(), options)
 	if err != nil {
 		log.Println("获取容器列表失败", err)
-		result = "获取容器列表失败"
 		return result, nil
 	}
 	log.Println("容器列表获取成功")

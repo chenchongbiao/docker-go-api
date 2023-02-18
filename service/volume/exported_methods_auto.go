@@ -9,6 +9,7 @@ func (vol *VolumeService) GetExportedMethods() dbusutil.ExportedMethods {
 		{
 			Name:    "GetVolumeList", // 获取存储卷列表
 			Fn:      vol.GetVolumeList,
+			InArgs:  []string{"args"},
 			OutArgs: []string{"result"},
 		},
 	}

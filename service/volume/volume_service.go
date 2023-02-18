@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"github.com/bluesky/docker-go-api/adapter"
+	"github.com/docker/docker/api/types/filters"
 	"github.com/docker/docker/api/types/volume"
 	"github.com/docker/docker/client"
 	"github.com/godbus/dbus"
@@ -46,10 +47,23 @@ func NewVolumeService(service *dbusutil.Service, cli *client.Client) *VolumeServ
 	return &volumeService
 }
 
-func (v *VolumeService) GetVolumeList() (result string, busErr *dbus.Error) {
-	volumes, err := v.cli.VolumeList(context.Background(), volume.ListOptions{})
+func (v *VolumeService) GetVolumeList(args map[string]interface{}) (result string, busErr *dbus.Error) {
+	var options volume.ListOptions
+	if len(args) == 0 {
+		options = volume.ListOptions{}
+	} else {
+		filter := filters.NewArgs()
+		for k := range args {
+			// fmt.Printf("%#v\n", k)
+			filter.Add(k, args[k].(string))
+		}
+		options = volume.ListOptions{Filters: filter}
+	}
+
+	volumes, err := v.cli.VolumeList(context.Background(), options)
 	if err != nil {
 		log.Println("存储列表获取失败", err)
+		return result, nil
 	}
 	log.Println("存储列表获取成功")
 
